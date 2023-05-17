@@ -39,7 +39,7 @@ def gbm(ticker, datalenght, N):
 
 	return df
 
-def prev_graph(df):
+def prev_graph(df, ticker):
 	fig, ax = plt.subplots(figsize=(12,6))
 	for index, row in df.iterrows():
 		ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD")
@@ -48,16 +48,18 @@ def prev_graph(df):
 	ax.plot(range(len(df.columns)), df.loc["mean"], linewidth=2.5, c ="k", label="Média das Simulações")
 	ax.plot(range(len(df.columns)), df.loc["mean"] - df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2, label="Intervalo de Confiança de 95%")
 	ax.plot(range(len(df.columns)), df.loc["mean"] + df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2)
-	ax.set_title("Previsão de valor de ação da Amazon (01/05/2022 a 01/05/2023)", loc = "left")
-	ax.set_xlabel("Dias após 1 de Maio de 2022")
+	ax.set_title(f"Previsão de valor de ação {ticker}", loc = "left")
+	ax.set_xlabel("Dias de negociação após o dia presente")
 	ax.set_ylabel("Valor em Doláres Americanos ($)")
 	
 	plt.legend()
 	return fig
 
-def hist(df):
-	fig,ax = plt.subplots()
-	ax.hist(df.iloc[:,-1], bins = 50)
-	ax.set_title("Histograma dos valores previstos para o valor da ação da Google a 01/05/2023", loc = "left")
+def hist(df, ticker):
+	fig,ax = plt.subplots(figsize=(12,7.5))
+	ax.hist(df.iloc[:,-1], bins = 50, color="#ADADAD")
+	ax.set_title(f"Histograma dos valores previstos para o valor da ação {ticker} após 365 dias de negociação", loc = "left")
 	ax.set_xlabel("Valor em Doláres Americanos ($)")
+
+	return fig
 

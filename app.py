@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from functions import gbm, prev_graph
+from functions import gbm, prev_graph, hist
 
 st.set_page_config(page_title = "Stock Forecasting", layout = "wide")
 
@@ -22,10 +22,9 @@ st.write("---")
 
 df = gbm(ticker, prev_data, runs)
 
-figura = prev_graph(df)
-
 col1, col2 = st.columns(2)
 
-col1.pyplot(figura, use_container_width = True)
+col1.pyplot(prev_graph(df, ticker), use_container_width = True)
+col2.pyplot(hist(df, ticker), use_container_width = True)
 
 
