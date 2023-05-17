@@ -1,0 +1,63 @@
+import numpy as np
+import pandas as pd
+import yfinance as yf
+import matplotlib.pyplot as plt
+import datetime as dt
+plt.style.use("fivethirtyeight")
+
+
+def gbm(ticker, datalenght, N):
+	if datalenght == "6 Months":
+		dift = dt.timedelta(days=180)
+	elif datalenght == "1 Year":
+		dift = dt.timedelta(days=365)
+	elif datalenght == "3 Years":
+		dift = dt.timedelta(days=1095)
+	elif datalenght == "5 Years":
+		dift = dt.timedelta(days=1825)
+
+	start = dt.datetime.now() - dift
+	end = dt.datetime.now()
+
+	stock_data = yf.download(ticker, start, end)
+	returns = stock_data['Adj Close'].pct_change()
+	std = returns.std()
+	mu = returns.mean() 
+
+	big_list = []
+
+	for i in range(N):
+		stock_value = [stock_data["Adj Close"][-1]]
+		for day in range(365):
+			value = stock_value[-1] * np.exp((mu - (std**2)/2) + std * np.random.normal(0,1))
+			stock_value.append(value)
+		big_list.append(stock_value)
+
+	df = pd.DataFrame(big_list, columns=range(len(big_list[0])))
+	df.loc["mean"] = df.median()
+	df.loc["std"] = df.std()
+
+	return df
+
+def prev_graph(df):
+	fig, ax = plt.subplots(figsize=(12,6))
+	for index, row in df.iterrows():
+		ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD")
+	
+	ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD", label = "Simulações")
+	ax.plot(range(len(df.columns)), df.loc["mean"], linewidth=2.5, c ="k", label="Média das Simulações")
+	ax.plot(range(len(df.columns)), df.loc["mean"] - df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2, label="Intervalo de Confiança de 95%")
+	ax.plot(range(len(df.columns)), df.loc["mean"] + df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2)
+	ax.set_title("Previsão de valor de ação da Amazon (01/05/2022 a 01/05/2023)", loc = "left")
+	ax.set_xlabel("Dias após 1 de Maio de 2022")
+	ax.set_ylabel("Valor em Doláres Americanos ($)")
+	
+	plt.legend()
+	return fig
+
+def hist(df):
+	fig,ax = plt.subplots()
+	ax.hist(df.iloc[:,-1], bins = 50)
+	ax.set_title("Histograma dos valores previstos para o valor da ação da Google a 01/05/2023", loc = "left")
+	ax.set_xlabel("Valor em Doláres Americanos ($)")
+
