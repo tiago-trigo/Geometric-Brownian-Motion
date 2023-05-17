@@ -68,8 +68,9 @@ def hist(df, ticker):
 	x = np.linspace(np.min(df.iloc[:,-1]), np.max(df.iloc[:,-1]), 100)
 	shape,loc,scale = lognorm.fit(df.iloc[:,-1])
 	pdf = lognorm.pdf(x, shape, loc, scale)
-	ax.plot(x,pdf, color = "red")
-	ax.axvline(expected)
+	ax.plot(x,pdf, color = "red", label = "Lognormal Fit")
+	ax.axvline(expected, label = "Expected Value")
 
+	plt.legend()
 	return fig
 
