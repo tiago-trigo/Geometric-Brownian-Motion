@@ -3,6 +3,8 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 import datetime as dt
+from scipy.stats import lognorm
+
 plt.style.use("fivethirtyeight")
 
 
@@ -56,10 +58,18 @@ def prev_graph(df, ticker):
 	return fig
 
 def hist(df, ticker):
+	expected = np.mean(df.iloc[:,-1])
+
 	fig,ax = plt.subplots(figsize=(12,7.5))
-	ax.hist(df.iloc[:,-1], bins = 50, color="#ADADAD")
+	ax.hist(df.iloc[:,-1], bins = 50, color="#ADADAD", density = True)
 	ax.set_title(f"Histograma dos valores previstos para o valor da ação {ticker} após 365 dias de negociação", loc = "left")
 	ax.set_xlabel("Valor em Doláres Americanos ($)")
+
+	x = np.linspace(np.min(df.iloc[:,-1]), np.max(df.iloc[:,-1]), 100)
+	shape,loc,scale = lognorm.fit(df.iloc[:,-1])
+	pdf = lognorm.pdf(x, shape, loc, scale)
+	ax.plot(x,pdf, color = "red")
+	ax.axvline(expected)
 
 	return fig
 
