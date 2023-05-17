@@ -3,4 +3,5 @@ numpy
 pandas
 datetime
 streamlit
-yfinance 
+yfinance
+scipy
