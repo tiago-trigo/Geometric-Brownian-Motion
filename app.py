@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from functions import gbm, prev_graph, hist
+from pytickersymbols import PyTickerSymbols
 
 st.set_page_config(page_title = "Stock Forecasting", layout = "wide")
+
+stock_data = PyTickerSymbols()
+us_stocks = stock_data.get_stocks_by_index("S&P 500")
 
 with st.container(): 
 	st.title("📈 Stock Price Forecasting")
@@ -14,7 +18,7 @@ st.write("---")
 
 col1, col2, col3 = st.columns(3)
 
-ticker = col1.selectbox("Select a stock", ["AAPL", "GOOGL", "AMZN", "TSLA"])
+ticker = col1.selectbox("Select a stock", us_stocks)
 prev_data = col2.selectbox("Select the lenght of training data", ["6 Months", "1 Year", "3 Years", "5 Years"])
 runs = col3.selectbox("Select the number of simulations", [100, 500, 1000, 2500, 5000])
 
