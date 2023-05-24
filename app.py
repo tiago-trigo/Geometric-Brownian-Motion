@@ -8,6 +8,8 @@ st.set_page_config(page_title = "Stock Forecasting", layout = "wide")
 
 stock_data = PyTickerSymbols()
 us_stocks = stock_data.get_stocks_by_index("S&P 500")
+df = pd.DataFrame.from_dict(list(us_stocks), orient='columns')
+tickers = df["symbol"]
 
 with st.container(): 
 	st.title("📈 Stock Price Forecasting")
