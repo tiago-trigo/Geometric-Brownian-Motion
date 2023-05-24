@@ -20,7 +20,7 @@ st.write("---")
 
 col1, col2, col3 = st.columns(3)
 
-ticker = col1.selectbox("Select a stock", us_stocks)
+ticker = col1.selectbox("Select a stock", tickers)
 prev_data = col2.selectbox("Select the lenght of training data", ["6 Months", "1 Year", "3 Years", "5 Years"])
 runs = col3.selectbox("Select the number of simulations", [100, 500, 1000, 2500, 5000])
 
