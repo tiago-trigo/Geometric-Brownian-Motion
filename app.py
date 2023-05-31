@@ -30,7 +30,7 @@ df = gbm(ticker, prev_data, runs)
 
 col1, col2 = st.columns(2)
 
-col1.pyplot(prev_graph(df, ticker), use_container_width = True)
+col1.pyplot(prev_graph(df, ticker, runs), use_container_width = True)
 col2.pyplot(hist(df, ticker), use_container_width = True)
 
 

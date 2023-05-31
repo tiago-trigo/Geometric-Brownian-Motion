@@ -38,15 +38,17 @@ def gbm(ticker, datalenght, N):
 	df = pd.DataFrame(big_list, columns=range(len(big_list[0])))
 	df.loc["mean"] = df.median()
 	df.loc["std"] = df.std()
-
+	print(df.tail())
 	return df
 
-def prev_graph(df, ticker):
+def prev_graph(df, ticker, N):
 	fig, ax = plt.subplots(figsize=(12,6))
 	for index, row in df.iterrows():
+		if index >= N-2:
+			break
 		ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD")
 	
-	ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD", label = "Simulações")
+	#ax.plot(range(len(df.columns)), row, alpha=0.13, linewidth=0.9, zorder = 1, color="#ADADAD", label = "Simulações")
 	ax.plot(range(len(df.columns)), df.loc["mean"], linewidth=2.5, c ="k", label="Média das Simulações")
 	ax.plot(range(len(df.columns)), df.loc["mean"] - df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2, label="Intervalo de Confiança de 95%")
 	ax.plot(range(len(df.columns)), df.loc["mean"] + df.loc["std"]*1.96/2, color = "k", linestyle = "dotted", linewidth = 2)
