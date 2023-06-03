@@ -9,7 +9,7 @@ This app is an interactive dashboard showcasing stock value predicitons based on
 Assuming you have Python installed, you'll have to install the required Python packages. Open the terminal in the correct directory and run:
 
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 Then you just have to run the following command and the app will run locally:
